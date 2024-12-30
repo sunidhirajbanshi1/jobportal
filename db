@@ -1,0 +1,46 @@
+CREATE TABLE `admin`(
+
+  `username` varchar(128) NOT NULL, 
+  `password` varchar(128) NOT NULL,
+
+PRIMARY KEY  (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=100;
+
+
+INSERT INTO `admin` (`username`,`password`)VALUES('Sunidhi','password');
+
+INSERT INTO `admin` (`username`,`password`)VALUES('khusbhu','pass');
+
+
+
+CREATE TABLE IF NOT EXISTS jobseeker2 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fName VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ CREATE TABLE jobseeker(
+     jid int not null PRIMARY key,
+     email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+      id INT,
+     FOREIGN KEY (id) REFERENCES jobseeker2(id));
+
+     CREATE TABLE jobs1 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    company VARCHAR(100) NOT NULL,
+    location VARCHAR(100),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jobseeker_id INT NOT NULL,
+    job_id INT NOT NULL,
+    application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (jobseeker_id) REFERENCES jobseeker2(id) ON DELETE CASCADE,
+    FOREIGN KEY (job_id) REFERENCES jobs1(id) ON DELETE CASCADE
+);
