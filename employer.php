@@ -60,13 +60,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
             margin: 0;
             padding: 0;
             background-color: #f9f9f9;
+            
         }
         .registration-container {
-            max-width: 400px;
-            margin: 30px auto;
+            width: 400px;
+            margin: 15px auto;
             background-color: #fff;
             border: 1px solid #ddd;
-            border-radius: 10px;
+            border-radius: 20px;
             padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -84,8 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         }
         .registration-container input,
         .registration-container select {
-            width: 90%;
-            padding: 5px;
+            width: 95%;
+            padding: 8px;
             margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -124,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 <body>
 <?php include("indexNavbar.php")?>
     <div class="registration-container">
-        <h1>Create your free Employer Account</h1>
+        <h1>Create your Employer Account</h1>
         <p>Fill the basic information and start recruiting now!</p>
         <form action="employer.php" method="POST">
             <input type="text" name="organization_name" placeholder="Organization Name" required>
@@ -135,8 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
             
             <input type="submit" name="register" value="Create Employer Account">
        
-            <h5 style="color: red;"> -- Already have an account ? <a href="employerlogin.php"
-                    style="border: 0; ">Login</a>
+            <span style="color: red;text-align:center;  margin-left:59px;">  Already have an account ? </span><a href="employerlogin.php"
+                    style="border: 2;  ">Login</a>
 
     </div>
 </body>

@@ -13,7 +13,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,7 +35,7 @@ h2 {
     max-width: 400px;
     background: #fff;
     padding: 30px 20px;
-    border-radius: 10px;
+    border-radius: 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -153,9 +153,7 @@ h2 {
                 <div class="field input">
                     <input type="submit" class="btn" name="submit" value="Login">
                 </div>
-                <div class="link">
-                    <p>Don't have an account? <a href="register.php">Register here</a>.</p>
-                </div>
+               
             </form>
         </div>
     </div>

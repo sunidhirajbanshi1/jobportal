@@ -17,19 +17,18 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 //Fetch data counts
-//$jobCategoriesQuery = "SELECT COUNT(*) as count FROM job_categories";
+$jobCategoriesQuery = "SELECT COUNT(*) as count FROM job_categories";
 $employersQuery = "SELECT COUNT(*) as count FROM employer";
 $jobseekersQuery = "SELECT COUNT(*) as count FROM jobseeker2";
 $jobsQuery = "SELECT COUNT(*) as count FROM jobs1";
-/*$sql = "SELECT COUNT(*) AS applications FROM job_applications";
-$result = mysqli_query($conn, $sql);
-$applications = mysqli_fetch_assoc($result)['applications'];*/
+$applicationsQuery = "SELECT COUNT(*) AS applications FROM applications";
 
 
-//$jobCategories = $conn->query($jobCategoriesQuery)->fetch_assoc()['count'];
+$jobCategories = $conn->query($jobCategoriesQuery)->fetch_assoc()['count'];
 $employers = $conn->query($employersQuery)->fetch_assoc()['count'];
 $jobseekers = $conn->query($jobseekersQuery)->fetch_assoc()['count'];
 $jobs = $conn->query($jobsQuery)->fetch_assoc()['count'];//
+$applications = $conn->query($applicationsQuery)->fetch_assoc()['count'];
 
 
 
@@ -200,10 +199,10 @@ h1 {
                     <td><a href="employer.php">Registered Employers</a></td>
                 </tr>
                 <tr>
-                    <td><a href="Jobseekers.php">Registered Candidates</a></td>
+                    <td><a href="view_job_applications.php">Registered Candidates</a></td>
                 </tr>
                 <tr>
-                    <td><a href="jobs.php">Listed Jobs</a></td>
+                    <td><a href="joblisting.php">Listed Jobs</a></td>
                 </tr>
                 <tr>
                     <td><a href="reports.php">Reports</a></td>

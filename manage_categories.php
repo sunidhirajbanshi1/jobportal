@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include('../includes/db.php');
+include('db.php');
 
 // Add a new category
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_category'])) {

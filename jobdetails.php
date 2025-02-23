@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 $job_id = isset($_GET['id']) && !empty($_GET['id']) ? intval($_GET['id']) : 0; 
 
 // Fetch job details from the database
-$sql = "SELECT * FROM jobs1 WHERE id = ?";
+$sql = "SELECT * FROM jobs WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $job_id);
 $stmt->execute();
@@ -39,7 +39,7 @@ $conn->close();
 <head>
     <title><?php echo $row["job_title"]; ?></title>
     <style>
-       <style>
+   
         body {
             font-family: sans-serif;
             margin: 20px;

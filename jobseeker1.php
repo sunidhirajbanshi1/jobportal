@@ -1,30 +1,33 @@
 <?php
 session_start();
-
-// Connect to the database
 $conn = new mysqli("localhost", "root", "", "jobportal");
 
-// Check connection
+// Check database connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 $error = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
-    $password =md5( $_POST["password"]);
+    $password = $_POST["password"]; // No hashing here, verify later
 
-    // Prepare and execute the SQL statement
+    // Fetch user from the database
     $stmt = $conn->prepare("SELECT id, password FROM jobseeker2 WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['jobseeker_id'] = $row['id']; 
-            header("Location: jobseekerdashboard.php"); // Redirect to dashboard
+        $user = $result->fetch_assoc();
+
+        // Verify password
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['jobseeker_id'] = $user['id'];
+
+            // Redirect to jobseeker dashboard
+            header("Location: jobseekerdashboard.php");
             exit();
         } else {
             $error = "Invalid email or password.";
@@ -34,50 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt->close();
-// Check if the form is submitted
-/*if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $email = $_POST['email'];
-    $password = md5($_POST['password']);
+}
 
-    // Validate input
-    if (empty($email) || empty($password)) {
-        echo "<script>alert('Email and password are required.');</script>";
-    } else {
-        // Query to fetch the user by email
-        $sql = "SELECT id, password FROM jobseeker2 WHERE email = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        // Check if the user exists
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-
-            // Verify the password
-            if (password_verify($password, $user['password'])) {
-                // Set session variables for the logged-in user
-                $_SESSION['jobseeker_id'] = $user['id'];
-                $_SESSION['email'] = $email;
-
-                // Redirect to the dashboard
-                header("Location: jobseekerdashboard.php");
-                exit();
-            } else {
-                echo "<script>alert('Invalid email or password.');</script>";
-            }
-        } else {
-            echo "<script>alert('No account found with that email.');</script>";
-        }
-
-        $stmt->close();
-    }
-}*/}
 $conn->close();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,7 +95,7 @@ $conn->close();
             text-align:left;
         }
         .login-container input {
-            width: 100%;
+            width: 95%;
             padding: 8px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
@@ -167,7 +130,7 @@ $conn->close();
             font-size: 14px;
         }
         .register a{
-color: #ffffff;
+   color:rgb(220, 93, 93);
         }
         .login-container .register a {
             color: #f1c40f;
@@ -209,9 +172,10 @@ color: #ffffff;
 .navbar a {
     color: #333; /* Text color */
     text-decoration:none;
-    margin-left: 60px;
+    margin-left: 20px;
     font-size: 16px;
     transition: color 0.3s ease;
+    padding:15px;
 }
 
 .navbar a:hover {
@@ -274,7 +238,7 @@ color: #ffffff;
                 <button type="submit" class="btn">Login</button>
             </form>
             <div class="register">
-                Don't have an account? <a href="jobseeker2.php">Register Now</a>
+              <span style="color:white" > Don't have an account?</span> <a href="jobseeker2.php">Register Now</a>
             </div>
         </div>
     </div>

@@ -28,14 +28,8 @@ CREATE TABLE IF NOT EXISTS jobseeker2 (
       id INT,
      FOREIGN KEY (id) REFERENCES jobseeker2(id));
 
-     CREATE TABLE jobs1 (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
-    company VARCHAR(100) NOT NULL,
-    location VARCHAR(100),
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+
+    
 CREATE TABLE applications (
     id INT AUTO_INCREMENT PRIMARY KEY,
     jobseeker_id INT NOT NULL,
@@ -43,4 +37,31 @@ CREATE TABLE applications (
     application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (jobseeker_id) REFERENCES jobseeker2(id) ON DELETE CASCADE,
     FOREIGN KEY (job_id) REFERENCES jobs1(id) ON DELETE CASCADE
+);
+CREATE TABLE job_categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(255) NOT NULL
+);
+INSERT INTO job_categories (category_name) VALUES 
+    ('Information Technology'),
+    ('Marketing'),
+    ('Banking'),
+    ('Telecommunication');
+   CREATE TABLE jobposting (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    job_title VARCHAR(255) NOT NULL,
+    category_id INT,
+    id INT,
+    job_description TEXT NOT NULL,
+    experience INT NOT NULL,
+    skills VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    deadline DATE NOT NULL,
+    logo VARCHAR(255),
+    company_name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES job_categories(category_id),
+    FOREIGN KEY (employer_id) REFERENCES employer(employer_id)
+    -- Optionally, if you have a location table
+    -- FOREIGN KEY (location_id) REFERENCES location(id)
 );

@@ -1,25 +1,13 @@
 <?php
 // Include database connection
-include('../includes/db.php');
+include('db.php');
 
-// Add a new job (for demonstration)
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_job'])) {
-    $job_title = trim($_POST['job_title']);
-    $job_description = trim($_POST['job_description']);
-    $category_id = intval($_POST['category_id']);
-    if (!empty($job_title) && !empty($job_description) && $category_id > 0) {
-        $stmt = $conn->prepare("INSERT INTO jobs (job_title, job_description, category_id) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $job_title, $job_description, $category_id);
-        $stmt->execute();
-        $stmt->close();
-    }
-}
 
 // Edit a job
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['edit_job'])) {
-    $job_id = intval($_POST['job_id']);
+    $job_id = intval($_POST['id']);
     $job_title = trim($_POST['job_title']);
-    $job_description = trim($_POST['job_description']);
+    $job_description = trim($_POST['description']);
     $category_id = intval($_POST['category_id']);
     if (!empty($job_title) && !empty($job_description) && $category_id > 0) {
         $stmt = $conn->prepare("UPDATE jobs SET job_title = ?, job_description = ?, category_id = ? WHERE job_id = ?");
@@ -39,12 +27,13 @@ if (isset($_GET['delete'])) {
     header("Location: manage_jobs.php");
 }
 
-// Fetch all jobs
+
 $jobs = $conn->query("
-    SELECT jobs.job_id, jobs.job_title, jobs.job_description, job_categories.category_name
-    FROM jobs
-    JOIN job_categories ON jobs.category_id = job_categories.category_id
-    ORDER BY jobs.job_id DESC
+    SELECT jobs.id, jobs.job_title, jobs.description, job_categories.category_name
+    FROM job AS jobs
+    JOIN job_categories 
+    ON jobs.category_id = job_categories.category_id
+    ORDER BY jobs.id DESC
 ");
 
 // Fetch all categories for the dropdown
@@ -141,70 +130,7 @@ $categories = $conn->query("SELECT * FROM job_categories");
             text-decoration: underline;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const editButtons = document.querySelectorAll(".edit-btn");
-            const addForm = document.getElementById("add-job-form");
-            const jobTitleInput = document.getElementById("job_title");
-            const jobDescriptionInput = document.getElementById("job_description");
-            const categorySelect = document.getElementById("category_id");
-
-            // Handle Edit Button Click
-            editButtons.forEach((button) => {
-                button.addEventListener("click", function () {
-                    const jobId = this.dataset.id;
-                    const jobTitle = this.dataset.title;
-                    const jobDescription = this.dataset.description;
-                    const categoryId = this.dataset.category;
-
-                    // Prefill the form with job data
-                    jobTitleInput.value = jobTitle;
-                    jobDescriptionInput.value = jobDescription;
-                    categorySelect.value = categoryId;
-
-                    // Change the form action for editing
-                    addForm.innerHTML = `
-                        <input type="hidden" name="job_id" value="${jobId}">
-                        <label for="job_title">Edit Job:</label>
-                        <input type="text" id="job_title" name="job_title" value="${jobTitle}" required>
-                        <label for="job_description">Job Description:</label>
-                        <textarea id="job_description" name="job_description" required>${jobDescription}</textarea>
-                        <label for="category_id">Category:</label>
-                        <select id="category_id" name="category_id">
-                            ${categorySelect.innerHTML}
-                        </select>
-                        <button type="submit" name="edit_job">Save Changes</button>
-                        <button id="cancel-edit" type="button">Cancel</button>
-                    `;
-
-                    // Cancel Edit Action
-                    document.getElementById("cancel-edit").addEventListener("click", function () {
-                        location.reload(); // Reload the page to reset the form
-                    });
-                });
-            });
-        });
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h1>Manage Jobs</h1>
-        
-        <!-- Add or Edit Job Form -->
-        <form id="add-job-form" method="POST">
-            <label for="job_title">Job Title:</label>
-            <input type="text" id="job_title" name="job_title" required>
-            <label for="job_description">Job Description:</label>
-            <textarea id="job_description" name="job_description" required></textarea>
-            <label for="category_id">Category:</label>
-            <select id="category_id" name="category_id" required>
-                <?php while ($category = $categories->fetch_assoc()): ?>
-                    <option value="<?php echo $category['category_id']; ?>"><?php echo htmlspecialchars($category['category_name']); ?></option>
-                <?php endwhile; ?>
-            </select>
-            <button type="submit" name="add_job">Add Job</button>
-        </form>
-
+   /** */ 
         <!-- Job List Table -->
         <table>
             <thead>
